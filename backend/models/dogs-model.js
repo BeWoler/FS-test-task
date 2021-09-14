@@ -1,9 +1,8 @@
 const {Schema, model} = require('mongoose');
 
 const DogsSchema = new Schema({
-  _id: {type: String, required: true, unique: true},
   breedId: {type: String, required: true},
-  title: {type: String},
+  title: {type: String, required: true},
   img: {type: String}
 })
 

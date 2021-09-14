@@ -5,4 +5,4 @@ const BreedsSchema = new Schema({
   title: {type: String}
 })
 
-module.exports = model('Breeds', BreedsSchema);
+module.exports = model('Breeds', BreedsSchema, 'breeds');

@@ -5,6 +5,7 @@ const cors = require("cors");
 const request = require("request");
 
 const breedsModel = require("./models/breeds-model");
+const dogsModel = require("./models/dogs-model");
 
 let app = express();
 
@@ -18,22 +19,29 @@ app.use(
 
 let dogs = [];
 
-app.get("/", (req, res) => {
-  request(process.env.REQUEST_URL, (err, response, body) => {
-    let parse = JSON.parse(response.body);
-    console.log(parse["message"]);
-    parse["message"].map((dog) => {
-      dogs.push(dog.split("/").join(".").split(".").slice(6, 8));
-    });
-    console.log(dogs);
-    dogs.map((dog) => {
-      breedsModel.create({
-        _id: dog[1],
-        title: dog[0],
+app.get("/", async (req, res) => {
+  try {
+    await request(process.env.REQUEST_URL, (err, response, body) => {
+      let parse = JSON.parse(response.body);
+      parse["message"].map((dog) => {
+        dogs.push(dog.split("/").join(".").split(".").slice(6, 8));
       });
+      dogs.map((dog) => {
+        breedsModel.create({
+          _id: dog[1],
+          title: dog[0],
+        });
+        dogsModel.create({
+          breedId: dog[1],
+          title: dog[0],
+          img: `${process.env.IMG_URL}/${dog[0]}/${dog[1]}.jpg`
+        })
+      });
+      return res.send(body);
     });
-    return res.send(body);
-  });
+  } catch (e) {
+    console.log(e);
+  }
 });
 
 const connection = async () => {
