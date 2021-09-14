@@ -3,12 +3,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const request = require("request");
+const router = require("./router/route.js");
 
 const breedsModel = require("./models/breeds-model");
 const dogsModel = require("./models/dogs-model");
 
 let app = express();
 
+app.use(express.json());
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -16,6 +18,7 @@ app.use(
     methods: ["GET", "POST"],
   })
 );
+app.use("/api", router);
 
 let dogs = [];
 
@@ -34,8 +37,8 @@ app.get("/", async (req, res) => {
         dogsModel.create({
           breedId: dog[1],
           title: dog[0],
-          img: `${process.env.IMG_URL}/${dog[0]}/${dog[1]}.jpg`
-        })
+          img: `${process.env.IMG_URL}/${dog[0]}/${dog[1]}.jpg`,
+        });
       });
       return res.send(body);
     });
