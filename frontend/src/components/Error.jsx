@@ -1,5 +1,5 @@
 import React from "react";
-import classes from "./styles/error.module.css";
+import classes from "../styles/error.module.css";
 
 const Error = () => {
   return (
