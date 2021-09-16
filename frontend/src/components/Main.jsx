@@ -14,12 +14,11 @@ const Main = () => {
   }
 
   useEffect(() => getContent(), []);
-
   const sortDogs = (sort) => {
     setSelectedSort(sort);
     setContent([...content].sort((a, b) => a[sort].localeCompare(b[sort])));
   };
-
+  
   return (
     <main>
       <MySelect
@@ -31,7 +30,7 @@ const Main = () => {
           { value: "breedId", name: "По заголовку" },
         ]}
       />
-      {content === [] ? <PostList content={content} /> : <Error />}
+      {content.length === 0 ? <Error /> : <PostList content={content} />}
     </main>
   );
 };
